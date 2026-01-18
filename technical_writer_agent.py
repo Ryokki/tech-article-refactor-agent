@@ -35,7 +35,7 @@ class TechnicalWriterAgent:
     3. 作家 (Writer): 执行重写
     """
 
-    def __init__(self, api_key: Optional[str] = None, model: str = "gemini-3-flash-preview"):
+    def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
         # 获取 API Key
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
         if not self.api_key:
@@ -44,7 +44,7 @@ class TechnicalWriterAgent:
 
         # 配置 Google GenAI
         genai.configure(api_key=self.api_key)
-        self.model_name = model
+        self.model_name = model or os.getenv("GEMINI_MODEL") or "gemini-3-flash-preview"
 
     def _call_llm(self, system_prompt: str, user_prompt: str, step_name: str) -> str:
         """

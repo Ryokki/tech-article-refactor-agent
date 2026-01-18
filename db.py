@@ -22,7 +22,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 class DatabaseConfig:
     """数据库配置，从环境变量读取"""
 
