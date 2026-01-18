@@ -109,6 +109,7 @@ class OptimizationLogRepository:
             cur.execute(f"""
                 CREATE TABLE IF NOT EXISTS {cls.TABLE_NAME} (
                     id SERIAL PRIMARY KEY,
+                    model TEXT,
                     original_content TEXT NOT NULL,
                     analyst_prompt TEXT,
                     analyst_result TEXT,
@@ -128,6 +129,7 @@ class OptimizationLogRepository:
 
     @classmethod
     def insert(cls,
+               model: str,
                original_content: str,
                analyst_prompt: str,
                analyst_result: str,
@@ -142,16 +144,17 @@ class OptimizationLogRepository:
         with get_db_cursor() as cur:
             cur.execute(f"""
                 INSERT INTO {cls.TABLE_NAME} (
+                    model,
                     original_content,
                     analyst_prompt, analyst_result,
                     architect_prompt, architect_result,
                     writer_prompt, writer_result,
                     evaluation, created_at
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 RETURNING id
             """, (
-                original_content,
+                model, original_content,
                 analyst_prompt, analyst_result,
                 architect_prompt, architect_result,
                 writer_prompt, writer_result,
